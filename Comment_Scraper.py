@@ -29,7 +29,7 @@ tweets = query_tweets(input_result, begindate = begin_date, enddate = end_date, 
 
 df = pd.DataFrame(tweet.__dict__ for tweet in tweets)
 updated_df = df[["text"]]
-updated_df.to_csv(f"{input_result}_last_comments.csv", encoding='Windows-1252', index=False)
+updated_df.to_csv(f"{input_result}_last_comments.csv", encoding='UTF-16', index=False)
 # updated_df.to_json(f"{input_result}_last_comments.json", orient='index')
 
 print("")
