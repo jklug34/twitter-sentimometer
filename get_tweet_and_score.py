@@ -94,7 +94,7 @@ for i in range(len(y_pred)):
     tweet_info.append(tweet_result)
 
 result = json.dumps(tweet_info)
-to_write = open('data/tweets_score.json', 'w')
+to_write = open(f'data/${input_result}_tweets_score.json', 'w')
 to_write.write(result)
 to_write.close
     

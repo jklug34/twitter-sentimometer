@@ -18,7 +18,22 @@ d3.json("data/iphone_tweets_score.json", function(error, data){
             iphoneGroup.push("negative")
         }
     });
+     
+    d3.json("data/galaxy_tweets_score.json", function(error, data){
+        var galaxyGroup = []
+        
+        data.forEach(function(d){
+            // console.log(d.score)
+            if (d.score >= 0.5){
+                galaxyGroup.push("positive")
+            }
+            else {
+                galaxyGroup.push("negative")
+            }
+        });   
+        console.log(galaxyGroup)
 
-    console.log(iphoneGroup)
+    });
+    
     
 })
