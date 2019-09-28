@@ -1,0 +1,14 @@
+/* Body */
+
+body {
+
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    height: 100vh;
+    background: #42A5B3;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed
+
+}
