@@ -37,8 +37,8 @@ tommorow = today + timedelta(days = 1)
 aftertommorow = tommorow + timedelta(days = 1)
 
 
-begin_date = tommorow
-end_date = aftertommorow
+begin_date = today
+end_date = tommorow
 lang = "en"   
 
 # function for getting clean tweets
@@ -62,14 +62,17 @@ def getCleanTwit(str1):
 # function for getting json file of tweets and scores
 
 input_result = input('What would you like to find?: ')
-limit = int(input("How many tweets would You like?: "))
+limit = 900
 
 tweets = query_tweets(input_result, begindate = begin_date, enddate = end_date, limit = limit-20, lang = lang)
 df = pd.DataFrame(tweet.__dict__ for tweet in tweets)
 
+
 # get info from the data frame
 username = df["username"].to_list()
 all_tweets = df["text"].to_list()
+retweets = df['is_retweet'].to_list()
+likes = df['likes'].to_list()
 clean_tweets = []
 for i in all_tweets:
     clean_tweets.append(getCleanTwit(i))
@@ -90,11 +93,13 @@ for i in range(len(y_pred)):
     tweet_result['username'] = str(username[i])
     tweet_result['tweets'] = str(all_tweets[i])
     tweet_result['clean_tweets'] = str(clean_tweets[i])
+    tweet_result['retweets'] = str(retweets[i])
+    tweet_result['likes'] = str(likes[i])
     tweet_result['score'] = str(y_pred[i])
     tweet_info.append(tweet_result)
 
 result = json.dumps(tweet_info)
-to_write = open(f'data/${input_result}_tweets_score.json', 'w')
+to_write = open(f'data/{input_result}_tweets_score.json', 'w')
 to_write.write(result)
 to_write.close
     
