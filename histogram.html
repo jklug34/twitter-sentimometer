@@ -17,16 +17,28 @@
 
 <body>
 
-    <div class="container"></div>
+    <div class="container">
         
         <!-- CHART -->
-            <div class="col-md-10">
+        <div class = "row">
+            <div class="col-md-9 align-self-center">
 
                 <div id="histogram" class="chart">
                     
-                    <div id="vis"></div>
-
                     <!-- We append our histogram here. -->
+
+                </div>
+
+            </div>
+
+        </div>
+        
+        <div class = "row">
+            <div class="col-md-9 align-self-center">
+
+                <div id="barchart" class="chart">
+                    
+                    <!-- We append our barchart here. -->
 
                 </div>
 
@@ -35,6 +47,7 @@
         </div>
 
 
+    </div>
 
     <!-- Footer  -->
 
@@ -46,6 +59,7 @@
     <script type="text/javascript" src="data/iphone_tweets_score.json"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
     <script type="text/javascript" src="js/histogram.js"></script>
+    <script type="text/javascript" src="js/bar.js"></script>
 </body>
 
 </html>

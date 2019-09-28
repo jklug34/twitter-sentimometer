@@ -12,3 +12,14 @@ body {
     background-attachment: fixed
 
 }
+
+.chart {
+
+    padding: 10px; 
+    background-color: white;
+    border-radius: 30px;
+    border: 1px solid #fff;
+    margin-top: 15px;
+    margin-bottom: 70px
+
+}
