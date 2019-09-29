@@ -9,24 +9,61 @@ d3.json("data/iphone_tweets_score.json", function(error, data){
     // console.log(data);
     var iphoneScores = []
     var new_score
+    var iphoneScoreAve
+    var itotal = 0
+    var iPos = 0
+    var iPosPercent
 
     data.forEach(function(d){
         // console.log(d.score)
         new_score = 2*(+d.score-0.5)
         iphoneScores.push(new_score)
     });
-    // console.log(iphoneScores)
+
+    for ( var i = 0; i < iphoneScores.length; i ++){
+      itotal += iphoneScores[i];
+    }
+    
+    iphoneScoreAve = itotal/iphoneScores.length;
+  
+
+    for ( var i = 0; i < iphoneScores.length; i ++){
+      if (iphoneScores[i] >= 0){
+          iPos += 1;
+      }
+    }
+    iPosPercent = iPos/iphoneScores.length
+    // console.log(iphoneScoreAve)
+    // console.log(iPosPercent)
     // read galaxy data
     d3.json("data/galaxy_tweets_score.json", function(error, data){
         var galaxyScores = []
+        var gScoreAve
+        var gtotal = 0
+        var gPos = 0
+        var gPosPercent
         
         data.forEach(function(d){
             // console.log(d.score)
             new_score = 2*(+d.score-0.5)
             galaxyScores.push(new_score)
         });   
+
+        for (var i = 0; i < galaxyScores.length; i ++){
+          gtotal += galaxyScores[i];
+        };
+          gScoreAve = gtotal/galaxyScores.length;
+         
     
-        // console.log(galaxyScores)
+        for ( var i = 0; i < galaxyScores.length; i ++){
+          if (galaxyScores[i] >= 0){
+              gPos += 1;
+          }
+        }
+        gPosPercent = gPos/iphoneScores.length
+    
+        // console.log(gScoreAve)
+        // console.log(gPosPercent)
 
         var margin = {top: 10, right: 30, bottom: 30, left: 40};
         var width = 800 - margin.left - margin.right;
@@ -91,8 +128,62 @@ d3.json("data/iphone_tweets_score.json", function(error, data){
         svg.append("text").attr("x", 320).attr("y", 30).text("Apple iphone").style("font-size", "15px").attr("alignment-baseline","middle")
         svg.append("text").attr("x", 320).attr("y", 60).text("Samsung Galaxy").style("font-size", "15px").attr("alignment-baseline","middle")
 
+        //build barchart1
+        var data = [
+          {
+            type: 'bar',
+            x: ['iphone'],
+            y: [iphoneScoreAve],
+            marker: {
+              color: '#69b3a2'
+            },
+            name: 'apple iphone'
+          },
+          {
+            type: 'bar',
+            x: ['galaxy'],
+            y: [gScoreAve],
+            marker: {
+              color: '#F2DA57'
+            },
+            name: 'samaung galaxy'
+          }
+          ]
+          var layout = {
+            yaxis: {title: 'average score'},
+            barmode: 'relative',
+            title: 'tweet sentiment score'
+          };
         
+          Plotly.newPlot('barchart1', data, layout);
 
+          var data2 = [
+            {
+              type: 'bar',
+              x: ['iphone'],
+              y: [100*iPosPercent],
+              marker: {
+                color: '#69b3a2'
+              },
+              name: 'apple iphone'
+            },
+            {
+              type: 'bar',
+              x: ['galaxy'],
+              y: [100*gPosPercent],
+              marker: {
+                color: '#F2DA57'
+              },
+              name: 'samaung galaxy'
+            }
+            ]
+            var layout2 = {
+              yaxis: {title: 'percentage'},
+              barmode: 'relative',
+              title: 'percentage of positive tweets'
+            };
+          
+            Plotly.newPlot('barchart2', data2, layout2);
             
 
     })  

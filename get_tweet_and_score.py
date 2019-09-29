@@ -64,7 +64,7 @@ def getCleanTwit(str1):
 input_result = input('What would you like to find?: ')
 limit = 900
 
-tweets = query_tweets(input_result, begindate = begin_date, enddate = end_date, limit = limit-20, lang = lang)
+tweets = query_tweets(input_result, limit = limit-20, lang = lang)
 df = pd.DataFrame(tweet.__dict__ for tweet in tweets)
 
 
