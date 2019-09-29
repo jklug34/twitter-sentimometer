@@ -325,9 +325,15 @@ function init() {
 }
 
 function optionChanged(newSample) {
+  d3.json("impeachment_tweets_score.json").then((data) => {
   // Fetch new data each time a new sample is selected
-  buildCharts(newSample);
-  buildMetadata(newSample);
+  for(i=0; i <= data.length; i++){
+    if (data[i].username == newSample){
+      buildCharts(data[i]);
+      buildMetadata(data[i]);
+    }
+  }
+  })
 }
 
 // Initialize the dashboard
