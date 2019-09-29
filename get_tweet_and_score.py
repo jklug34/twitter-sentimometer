@@ -14,6 +14,11 @@ from tensorflow.python.keras.layers import Dense, Embedding
 from tensorflow.python.keras.optimizers import Adam
 from tensorflow.python.keras.preprocessing.text import Tokenizer
 from tensorflow.python.keras.preprocessing.sequence import pad_sequences
+from nltk.corpus import stopwords
+nltk.download('stopwords')
+from collections import Counter
+from nltk.tokenize import RegexpTokenizer
+
 
 # import twitterscarper
 from twitterscraper import query_tweets
@@ -99,7 +104,29 @@ for i in range(len(y_pred)):
     tweet_info.append(tweet_result)
 
 result = json.dumps(tweet_info)
-to_write = open(f'data/{input_result}_tweets_score.json', 'w')
+to_write = open(f'data/{input_result}.json', 'w')
 to_write.write(result)
 to_write.close
     
+tokenizer = RegexpTokenizer(r'\w+')
+updated_df = df[["text"]]
+
+cleaned = updated_df.text.apply(lambda x: tokenizer.tokenize(x.lower()))
+
+total_words = []
+
+for sentences in cleaned:
+    for word in sentences:
+        total_words.append(word)
+
+    
+filtered_words = [word for word in total_words if word not in stopwords.words('english')]
+other_stop_words = ["com", "u", "us", "pic", "twitter", "www", "vs", "http", "status","https", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+final_filtered_words = [word for word in filtered_words if word not in other_stop_words]
+
+word_counter = Counter(final_filtered_words).most_common(10)    
+normalized_data = list(zip(*word_counter))
+    
+final_data = pd.DataFrame(normalized_data).T
+    
+final_data.to_csv("output.csv", index = False, header = True)
