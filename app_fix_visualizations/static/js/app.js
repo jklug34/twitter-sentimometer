@@ -37,12 +37,6 @@ function buildCharts(id) {
   d3.json(tweetUrl).then(function (data) {
     console.log(data)
 
-    // list = []
-    // entries = data.forEach(d => d.Object.entries {
-      
-    // })
-    
-
     var xValues = data.id;
     //console.log(XValues)
     var yValues = data.model_score;
