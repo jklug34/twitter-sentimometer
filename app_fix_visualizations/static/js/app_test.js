@@ -47,7 +47,7 @@ d3.json("../../db/impeachment_tweets_score.json").then(function(data){
     marker: {
       color: markerColors,   //markerColors,
       size: markerSize,
-      colorscale: "Viridis"
+      colorscale: "Magma"   //"Viridis"
       //sizemode: "area",
       //showscale: true
     },
@@ -59,11 +59,13 @@ d3.json("../../db/impeachment_tweets_score.json").then(function(data){
 
   var layout = {
     xaxis: {
-      title: "<b>Tweets With Keyword Impeachment</b>"
+      title: "<b>Tweets With Keyword Impeachment</b>",
+      automargin: true
     },
     yaxis: {
       title: "<b>Tweet Sentiment Score</b>",
-      autorange: true
+      autorange: true,
+      automargin: true
     },
     title: "Impeachment Sentiment"
   };
@@ -81,36 +83,48 @@ function buildMetadata(tweet) {
 
   // Use `d3.json` to fetch the metadata for a sample
   var metUrl = "../../db/impeachment_tweets_score.json";
-  d3.json(metUrl).then(function (tweet) {
-
+  d3.json(metUrl).then((tweets) => { 
+    //console.log(tweets)
+    tweets.forEach((tweet) => {
     //console.log("url");
     //console.log(metUrl);
-    console.log("first sample");
-    console.log(tweet);
-
+    //console.log("first sample");
+    //console.log(tweet);
+   })
 
     // Use d3 to select the panel with id of `#sample-metadata`
     var meta_sample = d3.select("#sample-metadata");
 
     // Use `.html("") to clear any existing metadata
     meta_sample.html("");
-    console.log("meta sample");
-    console.log(meta_sample);
+    //console.log("meta sample");
+    //console.log(meta_sample);
 
     // Use `Object.entries` to add each key and value pair to the panel
     Object.entries(tweet).forEach(function ([key, value]) {
       // loop and use d3 to append new tags for each key-value in the metadata.
       var row = meta_sample.append("p");
       row.text(`${key}: ${value}`);
-      console.log("row");
-      console.log(row);
-      console.log("key, value");
-      console.log(key, value);
+      //console.log("row");
+      //console.log(row);
+      //console.log("key, value");
+      //console.log(key, value);
     })
   });
 };
 
 
+
+// d3.json("../../db/impeachment_tweets_score.json").then((idNames) => {
+//   console.log(idNames)
+//   idNames.forEach((tweets) => {
+//     console.log(tweets)
+//     console.log(tweets.username)
+//     selector
+//       .append("option")
+//       .text(tweets.username)
+//       .property("value", tweets.username);
+//   });
 
 
 // function buildMetadata(id) {
@@ -147,7 +161,7 @@ function buildMetadata(tweet) {
 
 
 // // Bubble Chart
-function buildCharts(id) {
+function buildCharts(tweet) {
 //   var tweetUrl = "../../db/impeachment_tweets_score.json";
 //   d3.json(tweetUrl).then(function (data) {
 //     console.log(data)
@@ -202,13 +216,16 @@ function buildCharts(id) {
 
 
 
-  var metUrl = `/tweet_metadata/${id}`;
-  d3.json(metUrl).then(function (data) {
-    console.log("data");
+  var metUrl = "../../db/impeachment_tweets_score.json";
+  d3.json(metUrl).then((data) => { 
     console.log(data)
-    var score = data.model_score;
-    console.log("score");
-    console.log(score)
+    data.forEach((score) => {
+    //console.log("data");
+    //console.log(score)
+    var score = score.score;
+    //console.log("score");
+    //console.log(score)
+    
     // Enter a washing freq between 0 and 180  (180/9= 20; "20" is the scaling factor that must me multipied to wash freq to make it work)
     var level = parseFloat(score) * 180;
 
@@ -279,7 +296,7 @@ function buildCharts(id) {
     // DIV id="gauge"  #gauge to insert into HTML in the correct DIV
     Plotly.newPlot("gauge", data, layout);
   })
-
+  })
 };
 
 
@@ -289,18 +306,19 @@ function init() {
 
   // Use the list of sample names to populate the select options
   d3.json("../../db/impeachment_tweets_score.json").then((idNames) => {
-    console.log(idNames)
-    idNames.forEach((tweets) => {
-      console.log(tweets)
-      console.log(tweets.username)
+    //console.log(idNames)
+    idNames.forEach((tweet) => {
+      //console.log(tweets)
+      //console.log(tweets.username)
+      var user = tweet.username
       selector
         .append("option")
-        .text(tweets.username)
-        .property("value", tweets.username);
+        .text(user)
+        .property("value", user);
     });
 
     // Use the first sample from the list to build the initial plots
-    const firstSample = idNames[0];
+    const firstSample = idNames[899];
     buildCharts(firstSample);
     buildMetadata(firstSample);
   });
