@@ -34,8 +34,8 @@ def home():
 #  return jsonify(my_data)
 
 
-@app.route("/dashboard", methods=["POST"])
-def dashboard():
+@app.route("/histogram", methods=["POST"])
+def histogram():
 
     if request.method == "POST":
         query = request.form["tag"]
@@ -51,7 +51,7 @@ def dashboard():
         data = json.load(open(json_url))
         # return render_template('showjson.jade', data=data)
 
-    return render_template("dashboard.html", data=data)
+    return render_template("histogram.html", data=data)
 
 # @app.route("/dashboard")
 # def jsonfile();
