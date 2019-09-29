@@ -15,7 +15,6 @@ from tensorflow.python.keras.optimizers import Adam
 from tensorflow.python.keras.preprocessing.text import Tokenizer
 from tensorflow.python.keras.preprocessing.sequence import pad_sequences
 from nltk.corpus import stopwords
-nltk.download('stopwords')
 from collections import Counter
 from nltk.tokenize import RegexpTokenizer
 

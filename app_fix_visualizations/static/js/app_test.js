@@ -1,4 +1,4 @@
-d3.json("../../db/impeachment_tweets_score.json").then(function(data){
+d3.json("impeachment_tweets_score.json", function(error, data){
   console.log(data);
   
   var usernames = []
@@ -82,7 +82,7 @@ d3.json("../../db/impeachment_tweets_score.json").then(function(data){
 function buildMetadata(tweet) {
 
   // Use `d3.json` to fetch the metadata for a sample
-  var metUrl = "../../db/impeachment_tweets_score.json";
+  var metUrl = "impeachment_tweets_score.json";
   d3.json(metUrl).then((tweets) => { 
     //console.log(tweets)
     tweets.forEach((tweet) => {
@@ -216,13 +216,13 @@ function buildCharts(tweet) {
 
 
 
-  var metUrl = "../../db/impeachment_tweets_score.json";
+  var metUrl = "impeachment_tweets_score.json";
   d3.json(metUrl).then((data) => { 
     console.log(data)
     data.forEach((score) => {
     //console.log("data");
     //console.log(score)
-    var score = score.score;
+    var score = 2*(score.score-0.5);
     //console.log("score");
     //console.log(score)
     
@@ -305,7 +305,7 @@ function init() {
   var selector = d3.select("#selDataset");
 
   // Use the list of sample names to populate the select options
-  d3.json("../../db/impeachment_tweets_score.json").then((idNames) => {
+  d3.json("impeachment_tweets_score.json").then((idNames) => {
     //console.log(idNames)
     idNames.forEach((tweet) => {
       //console.log(tweets)
