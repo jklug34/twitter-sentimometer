@@ -32,6 +32,19 @@ d3.json("../../db/impeachment_tweets_score.json").then(function(data){
   console.log(likes)
   console.log(retweets)
   
+  var sum, avg = 0;
+
+  // dividing by 0 will return Infinity
+  // arr must contain at least 1 element to use reduce
+  if (impeachmentScores.length)
+  {
+      sum = impeachmentScores.reduce(function(a, b) { return a + b; });
+      avg = sum / impeachmentScores.length;
+  }
+  
+  console.log("The sum is: " + sum + ". The average is: " + avg + "<br/>");
+  
+  // SCATTTER PLOT 
   var xValues = usernames;
   //console.log(XValues)
   var yValues = impeachmentScores;
@@ -59,7 +72,7 @@ d3.json("../../db/impeachment_tweets_score.json").then(function(data){
 
   var layout = {
     xaxis: {
-      title: "<b>Tweets With Keyword Impeachment</b>",
+      title: "<b>Tweets With Keyword</b>",
       automargin: true
     },
     yaxis: {
@@ -67,17 +80,92 @@ d3.json("../../db/impeachment_tweets_score.json").then(function(data){
       autorange: true,
       automargin: true
     },
-    title: "Impeachment Sentiment"
+    title: "Sentiment by Tweet"
   };
 
   Plotly.newPlot("scatter", data, layout)
 
 
+  // AVERAGE GAUGE PLOT OF MODEL SCORES
+  var score = avg;  // to covert to -1 to 1:    2*(+d.score-0.5)
+  //console.log("score");
+  //console.log(score)
+  
+  // Enter a between 0 and 180  (180/9= 20; "20" is the scaling factor that must me multipied to wash freq to make it work)
+  var level = parseFloat(score) * 180;
+
+  // Trig to calc meter point
+  var degrees = 180 - level,
+    radius = .5;
+  var radians = degrees * Math.PI / 180;
+  var x = radius * Math.cos(radians);
+  var y = radius * Math.sin(radians);
+
+  // Path: may have to change to create a better triangle
+  var mainPath = 'M -.0 -0.025 L .0 0.025 L ',
+    pathX = String(x),
+    space = ' ',
+    pathY = String(y),
+    pathEnd = ' Z';
+  var path = mainPath.concat(pathX, space, pathY, pathEnd);
+
+  var data = [{
+    type: 'scatter',
+    x: [0], y: [0],
+    marker: { size: 28, color: '850000' },
+    showlegend: false,
+    name: 'Score',
+    // need to divide by 20 to get the correct model_score value on hover
+    text: (2*(score-0.5)),
+    hoverinfo: 'text+name'
+  },
+  {
+    values: [50 / 2, 50 / 2, 50],
+    rotation: 90,
+    text: ['Positive', 'Negative', ''],
+    textinfo: 'text',
+    textposition: 'inside',
+    marker: {
+      colors: ['rgba(14, 70, 0, .5)', 'rgba(248, 226, 202, .5)',
+        'rgba(255, 255, 255, 0)']
+    },
+    labels: ['0 - 1', '-1 - 0', ''],
+    hoverinfo: 'label',
+    hole: .5,
+    type: 'pie',
+    showlegend: false
+  }];
+
+  var layout = {
+    shapes: [{
+      type: 'path',
+      path: path,
+      fillcolor: '850000',
+      line: {
+        color: '850000'
+      }
+    }],
+    title: '<br>Average Tweet Sentiment Score</b> <br>',
+    height: 500,    // resize to fit
+    width: 500,     // resize to fit
+    xaxis: {
+      zeroline: false, showticklabels: false,
+      showgrid: false, range: [-1, 1]
+    },
+    yaxis: {
+      zeroline: false, showticklabels: false,
+      showgrid: false, range: [-1, 1]
+    }
+  };
+
+  // DIV id="gauge"  #gauge to insert into HTML in the correct DIV
+  Plotly.newPlot("avgGauge", data, layout);
+
 }); 
 
 
 
-
+// METADATA for each tweet by username dropdown
 
 function buildMetadata(tweet) {
 
@@ -115,106 +203,11 @@ function buildMetadata(tweet) {
 
 
 
-// d3.json("../../db/impeachment_tweets_score.json").then((idNames) => {
-//   console.log(idNames)
-//   idNames.forEach((tweets) => {
-//     console.log(tweets)
-//     console.log(tweets.username)
-//     selector
-//       .append("option")
-//       .text(tweets.username)
-//       .property("value", tweets.username);
-//   });
 
-
-// function buildMetadata(id) {
-
-//   // Use `d3.json` to fetch the metadata for a sample
-//   var metUrl = `../../db/impeachment_tweets_score.json/${id}`;
-//   d3.json(metUrl).then(function (id) {
-//     console.log("url");
-//     console.log(metUrl);
-//     console.log("first sample");
-//     console.log(id);
-
-
-//     // Use d3 to select the panel with id of `#sample-metadata`
-//     var meta_sample = d3.select("#sample-metadata");
-
-//     // Use `.html("") to clear any existing metadata
-//     meta_sample.html("");
-//     console.log("meta sample");
-//     console.log(meta_sample);
-
-//     // Use `Object.entries` to add each key and value pair to the panel
-//     Object.entries(id).forEach(function ([key, value]) {
-//       // loop and use d3 to append new tags for each key-value in the metadata.
-//       var row = meta_sample.append("p");
-//       row.text(`${key}: ${value}`);
-//       console.log("row");
-//       console.log(row);
-//       console.log("key, value");
-//       console.log(key, value);
-//     })
-//   });
-// };
-
-
-// // Bubble Chart
 function buildCharts(tweet) {
-//   var tweetUrl = "../../db/impeachment_tweets_score.json";
-//   d3.json(tweetUrl).then(function (data) {
-//     console.log(data)
-
-//     var xValues = data.id;
-//     //console.log(XValues)
-//     var yValues = data.model_score;
-//     var markerSize = data.model_score;
-//     var markerColors = data.model_score;
-//     var textValues = data.tweet;
-
-//     var trace = {
-//       x: xValues,
-//       y: yValues,
-//       //mode: "markers",
-//       type: "scatter",
-//       marker: {
-//         color: markerColors,   //markerColors,
-//         size: markerSize,
-//         colorscale: "Viridis"
-//         //sizemode: "area",
-//         //showscale: true
-//       },
-//       text: textValues
-//       //text: `(${markerColors[0]}, ${markerSize[0]}) <br> ${textValues[0]}`
-//     };
-
-//     var data = [trace];
-
-//     var layout = {
-//       xaxis: {
-//         title: "<b>Tweets With Keyword Impeachment</b>"
-//       },
-//       yaxis: {
-//         title: "<b>Tweet Sentiment Score</b>",
-//         autorange: true
-//       },
-//       title: "Impeachment Sentiment"
-//     };
-
-//     Plotly.newPlot("scatter", data, layout)
-//   });
-
-
 
   // GAUGE PLOT
   // Adapted Gauge Chart from <https://plot.ly/javascript/gauge-charts/>
-  // Weekly Washing Frequency 0-9 increment by 1
-  // `/metadata/<sample>`route
-  // buildGauge(data.WFREQ);
-
-
-
 
   var metUrl = "../../db/impeachment_tweets_score.json";
   d3.json(metUrl).then((data) => { 
@@ -249,9 +242,9 @@ function buildCharts(tweet) {
       x: [0], y: [0],
       marker: { size: 28, color: '850000' },
       showlegend: false,
-      name: 'Tweet Model Score',
+      name: 'Score',
       // need to divide by 20 to get the correct model_score value on hover
-      text: level / 180,
+      text: (2*(score-0.5)),
       hoverinfo: 'text+name'
     },
     {
@@ -264,7 +257,7 @@ function buildCharts(tweet) {
         colors: ['rgba(14, 70, 0, .5)', 'rgba(248, 226, 202, .5)',
           'rgba(255, 255, 255, 0)']
       },
-      labels: ['0.5-1', '0-0.5', ''],
+      labels: ['0 - 1', '-1 - 0', ''],
       hoverinfo: 'label',
       hole: .5,
       type: 'pie',
@@ -280,7 +273,7 @@ function buildCharts(tweet) {
           color: '850000'
         }
       }],
-      title: '<b>Tweet Sentiment Score</b> <br> 0 - 0.5 = Negative Sentiment <br> 0.5 - 1.0 = Positive Sentiment',
+      title: '<b>Tweet Sentiment Score By Tweet</b>',
       height: 500,    // resize to fit
       width: 500,     // resize to fit
       xaxis: {
@@ -299,7 +292,7 @@ function buildCharts(tweet) {
   })
 };
 
-
+// function to initialize everything
 function init() {
   // Grab a reference to the dropdown select element
   var selector = d3.select("#selDataset");
@@ -318,7 +311,7 @@ function init() {
     });
 
     // Use the first sample from the list to build the initial plots
-    const firstSample = idNames[899];
+    const firstSample = idNames[0];
     buildCharts(firstSample);
     buildMetadata(firstSample);
   });
@@ -333,11 +326,3 @@ function optionChanged(newSample) {
 // Initialize the dashboard
 init();
 
-
-// d3.json("../../db/impeachment_tweets_score.json").then((idNames) => {
-//   idNames.forEach((tweet) => {
-//     selector
-//       .append("option")
-//       .text(tweet)
-//       .property("value", tweet);
-//   });
