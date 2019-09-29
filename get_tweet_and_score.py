@@ -37,9 +37,9 @@ tommorow = today + timedelta(days = 1)
 aftertommorow = tommorow + timedelta(days = 1)
 
 
-begin_date = today
-end_date = tommorow
-lang = "en"   
+begin_date = dt.date(2019,6,28)
+end_date = dt.date(2019,9,28)
+lang = "english"   
 
 # function for getting clean tweets
 def getCleanTwit(str1):
@@ -64,7 +64,7 @@ def getCleanTwit(str1):
 input_result = input('What would you like to find?: ')
 limit = 900
 
-tweets = query_tweets(input_result, limit = limit-20, lang = lang)
+tweets = query_tweets(input_result, begindate = begin_date, enddate = end_date, limit = limit, lang = lang)
 df = pd.DataFrame(tweet.__dict__ for tweet in tweets)
 
 
