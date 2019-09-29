@@ -15,7 +15,6 @@ from tensorflow.python.keras.optimizers import Adam
 from tensorflow.python.keras.preprocessing.text import Tokenizer
 from tensorflow.python.keras.preprocessing.sequence import pad_sequences
 from nltk.corpus import stopwords
-nltk.download('stopwords')
 from collections import Counter
 from nltk.tokenize import RegexpTokenizer
 
@@ -90,7 +89,7 @@ def LastCommentScraper(input_result):
         tweet_info.append(tweet_result)
 
     result = json.dumps(tweet_info)
-    to_write = open(f'data/{input_result}_tweets_score.json', 'w')
+    to_write = open(f'data/{input_result}.json', 'w')
     to_write.write(result)
     to_write.close
 
