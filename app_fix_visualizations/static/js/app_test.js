@@ -299,7 +299,7 @@ function init() {
 
   // Use the list of sample names to populate the select options
   d3.json("../../db/impeachment_tweets_score.json").then((idNames) => {
-    //console.log(idNames)
+    console.log(idNames)
     idNames.forEach((tweet) => {
       //console.log(tweets)
       //console.log(tweets.username)
@@ -318,10 +318,16 @@ function init() {
 }
 
 function optionChanged(newSample) {
+  d3.json("../../db/impeachment_tweets_score.json").then((data) => {
   // Fetch new data each time a new sample is selected
-  buildCharts(newSample);
-  buildMetadata(newSample);
-}
+  for(i=0; i <= data.length; i++){
+    if (data[i].username == newSample){
+      buildCharts(data[i]);
+      buildMetadata(data[i]);
+    }
+  }
+  })
+ }
 
 // Initialize the dashboard
 init();
