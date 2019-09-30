@@ -18,10 +18,17 @@
   The plot shows the most frequent words appearing in the tweets of the search topic.
 
   * Sentiment analysis
-  ![](images/sentiment-1.png)
+  ![](images/sentiment_1.png)
   Our CNN model predicts the sentiment of each tweets and returns a value range from -1 to 1, with -1 as the most negative sentiemnt and 1 as the most positive  sentiment. The tweet could be chosed by using the dropdown. The info of the tweet is shown in the info box and the score the the sentiemnt is shown in the gauge plot.
-  ![](images/sentiment-1.png)
+  ![](images/sentiment_2.png)
   The distribution of tweet sentiment scores from individual user are shown in the scatter plot. The gauge plot showed the average sentiment score from the 900 tweets we collected from the search.
+
+  * Comparing results from different search topics.
+  ![](images/comparison_1.png)
+  Results from different search are used for compaisrion. The histogram showed the distribution of tweets according to the sentiment scores. 
+ 
+  ![](images/comparison_2.png)
+  The two bar charts showed the average score and the precentage of positive results from different search topics.
 
 
     
