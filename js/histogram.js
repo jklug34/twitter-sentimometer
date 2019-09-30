@@ -1,11 +1,8 @@
 // set width and heigh for svg
-var margin = {top: 10, right: 30, bottom: 30, left: 40};
-var width = 800 - margin.left - margin.right;
-var height = 400 - margin.top - margin.bottom;
-var new_score
+
 
 // read iphone data
-d3.json("data/iphone_tweets_score.json", function(error, data){
+d3.json("data/yankees.json", function(error, data){
     // console.log(data);
     var iphoneScores = []
     var new_score
@@ -36,7 +33,7 @@ d3.json("data/iphone_tweets_score.json", function(error, data){
     // console.log(iphoneScoreAve)
     // console.log(iPosPercent)
     // read galaxy data
-    d3.json("data/galaxy_tweets_score.json", function(error, data){
+    d3.json("data/dodgers.json", function(error, data){
         var galaxyScores = []
         var gScoreAve
         var gtotal = 0
@@ -65,9 +62,9 @@ d3.json("data/iphone_tweets_score.json", function(error, data){
         // console.log(gScoreAve)
         // console.log(gPosPercent)
 
-        var margin = {top: 10, right: 30, bottom: 30, left: 40};
+        var margin = {top: 10, right: 30, bottom: 70, left: 100};
         var width = 800 - margin.left - margin.right;
-        var height = 400 - margin.top - margin.bottom;
+        var height = 500 - margin.top - margin.bottom;
 
         var svg = d3.select("#histogram")
              .append("svg")
@@ -100,7 +97,10 @@ d3.json("data/iphone_tweets_score.json", function(error, data){
         svg.append("g")
           .call(d3.axisLeft(y));
 
-        svg.selectAll("rect")
+        svg.append('g')
+          .attr('id', 'iphone')
+          .selectAll("rect")
+          .attr('id', 'iphone')
           .data(bins1)
           .enter()
           .append("rect")
@@ -111,7 +111,10 @@ d3.json("data/iphone_tweets_score.json", function(error, data){
             .style("fill", "#69b3a2")
             .style("opacity", 0.4)
         
-        svg.selectAll("rect2")
+        svg.append('g')
+            .attr('id', 'galaxy')
+            .selectAll("rect2")
+            .attr('id', 'galaxy')
             .data(bins2)
             .enter()
             .append("rect")
@@ -123,30 +126,78 @@ d3.json("data/iphone_tweets_score.json", function(error, data){
               .style("opacity", 0.4)
 
 
-        svg.append("circle").attr("cx",300).attr("cy",30).attr("r", 6).style("fill", "#69b3a2")
-        svg.append("circle").attr("cx",300).attr("cy",60).attr("r", 6).style("fill", "#F2DA57")
-        svg.append("text").attr("x", 320).attr("y", 30).text("Apple iphone").style("font-size", "15px").attr("alignment-baseline","middle")
-        svg.append("text").attr("x", 320).attr("y", 60).text("Samsung Galaxy").style("font-size", "15px").attr("alignment-baseline","middle")
+        
+        svg.append("circle").attr("cx",300).attr("cy",30).attr("r", 6).style("fill","#69b3a2" )
+        svg.append("text")
+           .attr("x", 320)
+            .attr("y", 30)
+            .attr("class", "legend")
+            .style("fill", "black")         
+            .on("click", function(){
+              // Determine if current line is visible
+              var active   = iphone.active ? false : true ,
+                newOpacity = active ? 0 : 1;
+              // Hide or show the elements
+              d3.select("#iphone").style("opacity", newOpacity);
+              // Update whether or not the elements are active
+              iphone.active = active;
+            })
+            .text("Yankees").style("font-size", "15px")
+            .attr("alignment-baseline","middle")
+
+        svg.append("circle").attr("cx",300).attr("cy",60).attr("r", 6).style("fill","#F2DA57")
+        svg.append("text")
+            .attr("x", 320)
+            .attr("y", 60)
+            .on("click", function(){
+              // Determine if current line is visible
+              var active   = galaxy.active ? false : true ,
+                newOpacity = active ? 0 : 1;
+              // Hide or show the elements
+              d3.select("#galaxy").style("opacity", newOpacity);
+              // Update whether or not the elements are active
+              galaxy.active = active;
+            })
+            .text("Dodgers").style("font-size", "15px").attr("alignment-baseline","middle")
+
+        svg.append("text")
+            .attr("x", 500)
+            .attr("y", 470)
+            .style("fill", "green")
+            .text("positive").style("font-size", "18px").attr("alignment-baseline","middle")
+
+        svg.append("text")
+            .attr("x", 120)
+            .attr("y", 470)
+            .style("fill", "red")
+            .text("negative").style("font-size", "18px").attr("alignment-baseline","middle")
+
+        svg.append("text")
+            .attr("x", 40)
+            .attr("y", 20)
+            .style("fill", "black")
+            .text("tweets score distribution").style("font-size", "22px").attr("alignment-baseline","middle")
+
 
         //build barchart1
         var data = [
           {
             type: 'bar',
-            x: ['iphone'],
+            x: ['Yankees'],
             y: [iphoneScoreAve],
             marker: {
               color: '#69b3a2'
             },
-            name: 'apple iphone'
+            name: 'Yankees'
           },
           {
             type: 'bar',
-            x: ['galaxy'],
+            x: ['Dodgers'],
             y: [gScoreAve],
             marker: {
               color: '#F2DA57'
             },
-            name: 'samaung galaxy'
+            name: 'Dodgers'
           }
           ]
           var layout = {
@@ -160,21 +211,21 @@ d3.json("data/iphone_tweets_score.json", function(error, data){
           var data2 = [
             {
               type: 'bar',
-              x: ['iphone'],
+              x: ['Yankees'],
               y: [100*iPosPercent],
               marker: {
                 color: '#69b3a2'
               },
-              name: 'apple iphone'
+              name: 'Yankees'
             },
             {
               type: 'bar',
-              x: ['galaxy'],
+              x: ['Dodgers'],
               y: [100*gPosPercent],
               marker: {
                 color: '#F2DA57'
               },
-              name: 'samaung galaxy'
+              name: 'Dodgers'
             }
             ]
             var layout2 = {

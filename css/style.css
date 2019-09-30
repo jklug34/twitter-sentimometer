@@ -26,8 +26,13 @@ body {
 }
 
 h1 {
-
     position: relative;
-    left: 100px;
+    left: 200px;
+    color: white
+  }
+
+  h2 {
+    position: relative;
+    left: 200px;
     color: white
   }
