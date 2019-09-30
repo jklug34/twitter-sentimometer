@@ -10,4 +10,10 @@
 
 * Visualization:
   * Search topics:
+  ![](images/webpage-1.png)
+  enter the search topic in the bracket and then hit "Tweexplore!" button. It returns the most recent tweets about the topic up to 900 tweets, The results are saved in json file in the folder data. 
+
+  * Most common words:
+  ![](images/10_common_words.png)
+
     
