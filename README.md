@@ -5,6 +5,7 @@
 * Modeling
   * sources of training data: 1,600,000 tweets from http://help.sentiment140.com/for-students/
   * The methods we tried including: naive bayes, random forest(RF), long short-term memory(LSTM), gated recurrent unit(GRU) and convolutional neural network(CNN). While naive bayes and RF achived around 70% accuracy, all the deep learning model(LSTM, GRU and CNN) achieved accuary of over 80%. We chose CNN as the model for our prediction. 
+  * The tweets are preprocessed to remove non-alphabetic character. The processed sentences are furtehr processed with removing stop words, stemming and lemmatization. For each steps the results are tested with the selected models. However, the results indicated that just removing non-alphabetic characters is already making model perform with over 80% accuracy. And further processing did not improve, and sometimes decrease accuracy. 
   * all the trials of machine learning model are stored in the folder model
 
 
@@ -29,6 +30,9 @@
  
   ![](images/comparison_2.png)
   The two bar charts showed the average score and the precentage of positive results from different search topics.
+
+  * Live tweets seniment analsysis
+  ![](images/real_time.png)
 
 
     
