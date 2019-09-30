@@ -58,6 +58,7 @@ def LastCommentScraper(input_result):
 
 
     # get info from the data frame
+    tweet_id = df['tweet_id'].to_list()
     username = df["username"].to_list()
     all_tweets = df["text"].to_list()
     retweets = df['is_retweet'].to_list()
@@ -80,6 +81,7 @@ def LastCommentScraper(input_result):
 
     for i in range(len(y_pred)):
         tweet_result = {} 
+        tweet_result['tweet_id'] = str(tweet_id[i])
         tweet_result['username'] = str(username[i])
         tweet_result['tweets'] = str(all_tweets[i])
         tweet_result['clean_tweets'] = str(clean_tweets[i])

@@ -47,7 +47,7 @@ def dashboard():
         # data.update({})
 
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-        json_url = os.path.join(SITE_ROOT, "data", f'{query}.json')
+        json_url = os.path.join(SITE_ROOT, "data", 'query.json')
         data = json.load(open(json_url))
         # return render_template('showjson.jade', data=data)
 

@@ -1,6 +1,7 @@
 d3.json("data/query.json").then(function(data){
   // console.log(data);
   
+  var tweet_id = []
   var usernames = []
   var clean_tweets = []
   var impeachmentScores = []
@@ -11,13 +12,14 @@ d3.json("data/query.json").then(function(data){
 
   data.forEach(function(d){
       //console.log(d.score)
-
+      id = d.tweet_id
       new_score = +d.score
       tweet = d.clean_tweets
       like = +d.likes
       retweet = +d.retweets
       username = d.username
 
+      tweet_id.push(id)
       usernames.push(username)
       clean_tweets.push(tweet)
       impeachmentScores.push(new_score)
@@ -25,7 +27,7 @@ d3.json("data/query.json").then(function(data){
       retweets.push(retweet)
       
   });
-
+  console.log(tweet_id)
   // console.log(usernames)
   // console.log(clean_tweets)
   // console.log(impeachmentScores)
@@ -204,20 +206,25 @@ function buildMetadata(tweet) {
 
 
 
-function buildCharts(tweet) {
+function buildCharts(sample) {
 
   // GAUGE PLOT
   // Adapted Gauge Chart from <https://plot.ly/javascript/gauge-charts/>
 
   var metUrl = "data/query.json";
   d3.json(metUrl).then((data) => { 
-    console.log(data)
-    data.forEach((score) => {
+    // console.log(data)
+    // data.forEach((score) => {
     //console.log("data");
     //console.log(score)
-    var score = score.score;
+    // var score = score.score;
     //console.log("score");
     //console.log(score)
+    for(i=0; i <data.length; i++){
+      if (data[i].tweet_id == sample){
+        score = +data[i].score
+      }
+    }
     
     // Enter a washing freq between 0 and 180  (180/9= 20; "20" is the scaling factor that must me multipied to wash freq to make it work)
     var level = parseFloat((score/2)+0.5) * 180;
@@ -289,40 +296,43 @@ function buildCharts(tweet) {
     // DIV id="gauge"  #gauge to insert into HTML in the correct DIV
     Plotly.newPlot("gauge", data, layout);
   })
-  })
+
 };
 
 // function to initialize everything
-function init() {
+
   // Grab a reference to the dropdown select element
   var selector = d3.select("#selDataset");
 
   // Use the list of sample names to populate the select options
   d3.json("data/query.json").then((idNames) => {
-    console.log(idNames)
+    //console.log(idNames)
     idNames.forEach((tweet) => {
       //console.log(tweets)
       //console.log(tweets.username)
-      var user = tweet.username
+      var t_id = tweet.tweet_id
       selector
         .append("option")
-        .text(user)
-        .property("value", user);
+        .text(t_id)
+        .property("value", t_id);
     });
-
+  });
+function init() {
+  d3.json("data/query.json").then((idNames) => {
     // Use the first sample from the list to build the initial plots
     const firstSample = idNames[899];
-    buildCharts(firstSample);
+    buildCharts(firstSample.tweet_id);
     buildMetadata(firstSample);
   });
-}
+  }
+
 
 function optionChanged(newSample) {
   d3.json("data/query.json").then((data) => {
   // Fetch new data each time a new sample is selected
-  for(i=0; i <= data.length; i++){
-    if (data[i].username == newSample){
-      buildCharts(data[i]);
+  for(i=0; i < data.length; i++){
+    if (data[i].tweet_id == newSample){
+      buildCharts(newSample);
       buildMetadata(data[i]);
     }
   }
