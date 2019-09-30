@@ -89,7 +89,7 @@ def LastCommentScraper(input_result):
         tweet_info.append(tweet_result)
 
     result = json.dumps(tweet_info)
-    to_write = open(f'data/{input_result}.json', 'w')
+    to_write = open('data/query.json', 'w')
     to_write.write(result)
     to_write.close
 
@@ -113,6 +113,7 @@ def LastCommentScraper(input_result):
     normalized_data = list(zip(*word_counter))
     
     final_data = pd.DataFrame(normalized_data).T
+    final_data.columns = ['Words', 'Amount_of_words']
     
     final_data.to_csv("output.csv", index = False, header = True)
     
